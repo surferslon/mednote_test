@@ -1,7 +1,22 @@
-docker pull mongo
-docker built -t mednote
+### Описание
+Приложение состоит из 2х контейнеров Докер - для базы данных mongodb и для сервера.
+Образ с сервером содержит все необходимое для запуска. После выполнения инструкции сервис будет доступен по адресу localhost:8080.
+Предполагается, что в системе уже установлен Докер.
+Дополнительных настроек не требуется.
+Для ручного тестирования есть возможность передать get-параметр test со значением 1, что бы время хранения кеша составило 10 сек. вместо недели.
 
-docker network create mednote_network
-docker run --rm -d -p 27017-27019:27017-27019 --name mongo --network mednote_network mongo --bind_ip_all
-docker run --rm -d -p 8080:8080 --name aioserver --network mednote_network mednote
+
+### Установка и запуск
+- Загрузка репозитория
+    - git clone https://github.com/surferslon/mednote_test.git && cd mednote_test
+- Загрузка образа базы данных
+    - docker pull mongo
+- Создание образа с сервером
+    - docker built -t mednote .
+- Создание сети внутри Докер
+    - docker network create mednote_network
+- Запуск контейнера базы данных в фоновом режиме
+    - docker run --rm -d -p 27017-27019:27017-27019 --name mongo --network mednote_network mongo --bind_ip_all
+- Запуск контейнера сервера в фоновом режиме
+    - docker run --rm -d -p 8080:8080 --name aioserver --network mednote_network mednote
 

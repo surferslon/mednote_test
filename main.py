@@ -13,7 +13,8 @@ INTERVAL = 7
 
 async def main(request):
     cached_page = await col.find_one({'page_name': PAGE_NAME})
-    if (not cached_page) or (datetime.now() - cached_page['date']) > timedelta(days=INTERVAL):
+    time_interval = timedelta(seconds=10) if request.query.get('test') else timedelta(days=INTERVAL)
+    if (not cached_page) or (datetime.now() - cached_page['date']) > time_interval:
         async with aiohttp.ClientSession() as session:
             async with session.get(PAGE_URL) as resp:
                 response_text = await resp.text()
